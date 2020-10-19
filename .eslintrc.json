@@ -1,0 +1,28 @@
+{
+	"root": true,
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"extends": "eslint:recommended",
+	"overrides": [
+		{
+			"files": ["src/*.js"]
+		}
+	],
+	"parserOptions": {
+		"ecmaVersion": 12,
+		"sourceType": "module"
+	},
+	"rules": {
+		"quotes": ["error", "single"],
+		"block-scoped-var": "error",
+		"class-methods-use-this": ["error"],
+		"curly": "error",
+		"eqeqeq": ["error", "always"],
+		"grouped-accessor-pairs": "error",
+		"no-else-return": "error",
+		"no-empty-function": "error",
+		"no-empty-pattern": "error"
+	}
+}
