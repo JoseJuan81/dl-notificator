@@ -2,15 +2,24 @@ class Notification {
   /*
   * @params {object} opts - opciones
   * @params {number} opts.duration - duración animación. por defecto 4000 (ms)
-  * @params {string} opts.error - color para mensajes de error
-  * @params {string} opts.info - color para mensajes de información
+  * @params {object} opts.errorOptions - opciones de configuración para notificación de error
+  * @params {object} opts.infoOptions - opciones de configuración para notificación de información
   * @params {boolean} opts.left - lado por el que aparece la notificación. Por defecto false porque se muestra por la derecha
-  * @params {string} opts.success - color para mensajes de éxito
+  * @params {object} opts.success - opciones de configuración para notificación de éxito
   * @params {number} opts.top - valor de desfase de la primera notificación respecto a la ventana del navegador. Por defecto es 1 (rem);
-  * @params {string} opts.warning - color para mensajes de advertencia
+  * @params {object} opts.warning - opciones de configuración para notificación de advertencia
   */
     constructor(opts = {}) {
-			const { duration, error, info, left, success, top, warning, zIndex } = opts;
+			const { duration, errorOptions, infoOptions, left, successOptions, top, warningOptions, zIndex } = opts;
+
+			const { bg: errorBg, color: errorColor, time: errorTime, closeBtn: errorClose } = errorOptions || {};
+			const { bg: infoBg, color: infoColor, time: infoTime, closeBtn: infoClose } = infoOptions || {};
+			const { bg: successBg, color: successColor, time: successTime, closeBtn: successClose } = successOptions || {};
+			const { bg: warningBg, color: warningColor, time: warningTime, closeBtn: warningClose } = warningOptions || {};
+
+			/**
+			 * Identificador único de cada instancia generada
+			 */
 			this.uuid = Math.random().toString(32).slice(2);
 			this.top = top;
 			/**
@@ -22,7 +31,7 @@ class Notification {
 			body.appendChild(mainNotificationContainer);
 
 			/**
-			 * Configurar y agregar estilos en el headc
+			 * Configurar y agregar estilos en el head
 			 */
       const showingSide = left ? 'left:0' : 'right:0'
       var style = document.createElement('style');
@@ -70,10 +79,30 @@ class Notification {
 
       this.container = mainNotificationContainer;
       this.duration = duration || 4000;
-      this.errorColor = error || 'red';
-      this.infoColor = info || 'blue';
-      this.successColor = success || 'green';
-			this.warningColor = warning || 'orange';
+      this.errorOpts = {
+				backgroundColor: errorBg || 'red',
+				color: errorColor || 'white',
+				closeBtn: !!errorClose,
+				time: errorTime || this.duration,
+			},
+      this.infoOpts = {
+				backgroundColor: infoBg || 'blue',
+				color: infoColor || 'white',
+				closeBtn: !!infoClose,
+				time: infoTime || this.duration,
+			};
+      this.successOpts = {
+				backgroundColor: successBg || 'green',
+				color: successColor || 'white',
+				closeBtn: !!successClose,
+				time: successTime || this.duration,
+			};
+			this.warningOpts = {
+				backgroundColor: warningBg || 'orange',
+				color: warningColor || 'white',
+				closeBtn: !!warningClose,
+				time: warningTime || this.duration,
+			};
   }
 
 	/**
@@ -82,18 +111,19 @@ class Notification {
 	 * @param {string} color - Color a usar en la notificación
 	 * @param {time} time - Tiempo de duración de la notificación
 	 */
-  add(message, color, time) {
+  add(notiOptions) {
     const { firstChild } = this.container;
-    const div = this.createNotificationContainer(message, color, time);
+    const div = this.createNotificationContainer(notiOptions);
     this.container.insertBefore(div, firstChild);
 	}
 
-  createNotificationContainer(message, color, time) {
+  createNotificationContainer(notiOptions) {
+		const { message, backgroundColor, color, time } = notiOptions;
     const div = document.createElement('div');
     div.addEventListener('animationend', this.removeIt.bind(this, div));
     div.style.animationDuration = `${time}ms`;
-		div.style.backgroundColor = color;
-		div.style.color = 'white';
+		div.style.backgroundColor = backgroundColor;
+		div.style.color = color;
     div.innerText = message;
     div.classList.add(`notification-${this.uuid}`);
     return div;
@@ -105,10 +135,9 @@ class Notification {
 	 * @param {string | null} errorColor - Color de la notificación. Si no existe se usa el color por defecto.
 	 * @param {number} time - tiempo de duración de la notificación. Si no existe se usa la duración por defecto.
 	 */
-  error({ message, color, time }) {
-		const errorColor = color || this.errorColor;
-		const errorTime = time || this.duration;
-    this.add(message, errorColor, errorTime);
+  error(errorOptions) {
+		const errorOpt = Object.assign({}, this.errorOpts, errorOptions);
+    this.add(errorOpt);
 	}
 
 	/**
@@ -117,10 +146,9 @@ class Notification {
 	 * @param {string | null} infoColor - Color de la notificación. Si no existe se usa el color por defecto.
 	 * @param {number} time - tiempo de duración de la notificación. Si no existe se usa la duración por defecto.
 	 */
-  info({ message, color, time }) {
-		const infoColor = color || this.infoColor;
-		const infoTime = time || this.duration;
-    this.add(message, infoColor, infoTime);
+  info(infoOptions) {
+		const infoOpt = Object.assign({}, this.infoOpts, infoOptions);
+    this.add(infoOpt);
 	}
   removeIt(el) {
     this.container.removeChild(el);
@@ -132,10 +160,9 @@ class Notification {
 	 * @param {string | null} successColor - Color de la notificación. Si no existe se usa el color por defecto.
 	 * @param {number} time - tiempo de duración en `ms` de la notificación. Si no existe se usa la duración por defecto.
 	 */
-  success({ message, color, time }) {
-		const successColor = color || this.successColor;
-		const successTime = time || this.duration;
-    this.add(message, successColor, successTime);
+  success(successOptions = {}) {
+		const successOpt = Object.assign({}, this.successOpts, successOptions);
+    this.add(successOpt);
 	}
 
 	/**
@@ -144,10 +171,9 @@ class Notification {
 	 * @param {string | null} infoColor - Color de la notificación. Si no existe se usa el color por defecto.
 	 * @param {number} time - tiempo de duración de la notificación. Si no existe se usa la duración por defecto.
 	 */
-  warning({ message, color, time }) {
-		const warningColor = color || this.warningColor;
-		const warningTime = time || this.duration;
-    this.add(message, warningColor, warningTime);
+  warning(warningOptions = {}) {
+		const warningOpt = Object.assign({}, this.warningOpts, warningOptions);
+    this.add(warningOpt);
   }
 }
 
