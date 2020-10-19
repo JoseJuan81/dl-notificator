@@ -10,6 +10,7 @@ window.addEventListener('load', () => {
 	const successRightTimeColor = document.getElementById('success-right-time-color');
 	const infoRightColor = document.getElementById('info-right-color');
 	const errorLeftTimeColor = document.getElementById('error-left-time-color');
+	const warningLeftTimeColor = document.getElementById('warning-left-time-color');
 
 	successRightDefault.addEventListener('click', () => {
 		rightNotification.success({
@@ -20,20 +21,28 @@ window.addEventListener('load', () => {
 		rightNotification.success({
 			message: 'Notificación de éxito con tiempo de 2 segundos y otro color',
 			time: 2000,
-			color: '#5FAD56',
+			backgroundColor: '#5FAD56',
 		})
 	})
 	infoRightColor.addEventListener('click', () => {
 		rightNotification.info({
 			message: 'Notificación de información con tiempo por defecto y otro color',
-			color: '#57B8FF',
+			backgroundColor: '#57B8FF',
+			color: '#D23751',
 		})
 	})
 	errorLeftTimeColor.addEventListener('click', () => {
-		leftNotification.info({
-			color: '#D00000',
+		leftNotification.error({
+			backgroundColor: '#D00000',
 			message: 'Notificación de error con tiempo de 2.6 seg y otro color',
 			time: 2600,
+		})
+	})
+	warningLeftTimeColor.addEventListener('click', () => {
+		leftNotification.error({
+			backgroundColor: '#F9C22E',
+			message: 'Notificación de advertencia con tiempo de 5.6 seg y otro color',
+			time: 5600,
 		})
 	})
 })
