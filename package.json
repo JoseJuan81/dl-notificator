@@ -1,0 +1,34 @@
+{
+  "name": "notificator",
+  "version": "1.0.0",
+  "description": "Componente contruido en js para mostrarle informacion al usuario mediante notificaciones temporales",
+  "main": "src/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.11.0",
+    "webpack": "^5.1.3",
+    "webpack-cli": "^4.0.0"
+  },
+  "scripts": {
+		"webpack": "webpack",
+		"dev": "NODE_ENV=development npm run webpack",
+		"build": "NODE_ENV=production npm run webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoseJuan81/Notificator.git"
+  },
+  "keywords": [
+    "notification",
+    "notificator",
+    "notificador",
+    "notificacion"
+  ],
+  "author": "https://github.com/JoseJuan81",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JoseJuan81/Notificator/issues"
+  },
+  "homepage": "https://github.com/JoseJuan81/Notificator#readme"
+}
