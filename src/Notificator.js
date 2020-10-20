@@ -86,6 +86,7 @@ class Notification {
 			.close-btn-${this.uuid} {
 				background-color: transparent;
 				border: none;
+				cursor: pointer;
 				padding: 0.25rem;
 				position: absolute;
 				right: .1rem;
