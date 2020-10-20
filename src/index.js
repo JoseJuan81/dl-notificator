@@ -15,6 +15,7 @@ window.addEventListener('load', () => {
 	successRightDefault.addEventListener('click', () => {
 		rightNotification.success({
 			message: 'Notificación de éxito con tiempo por defecto de 4 segundos',
+			closeBtn: true,
 		})
 	})
 	successRightTimeColor.addEventListener('click', () => {
@@ -29,6 +30,7 @@ window.addEventListener('load', () => {
 			message: 'Notificación de información con tiempo por defecto y otro color',
 			backgroundColor: '#57B8FF',
 			color: '#D23751',
+			closeBtn: true,
 		})
 	})
 	errorLeftTimeColor.addEventListener('click', () => {
@@ -43,6 +45,7 @@ window.addEventListener('load', () => {
 			backgroundColor: '#F9C22E',
 			message: 'Notificación de advertencia con tiempo de 5.6 seg y otro color',
 			time: 5600,
+			closeBtn: true,
 		})
 	})
 })

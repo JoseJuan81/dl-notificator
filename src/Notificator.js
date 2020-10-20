@@ -50,35 +50,61 @@ class Notification {
         margin: 0.5rem 1rem;
         max-width: 15rem;
         min-width: 12rem;
-        padding: 1rem;
-      }
+				padding: 1rem;
+				position: relative;
+			}
       @keyframes entering-${this.uuid} {
         0% {
-            transform: translateX(${left ? -20 : 20}rem);
-            opacity: 0;
+            transform: translateX(${left ? -150 : 150}%);
         }
-        5% {
-          transform: translateX(${left ? 3.5 : -3.5}rem);
-          opacity: 1
-        }
-        10% {
-          transform: translateX(${left ? 0.25 : -0.25}rem);
-        }
-        90% {
-          transform: translateX(${left ? 0.25 : -0.25}rem);
-        }
-        95% {
-          transform: translateX(${left ? 3.5 : -3.5}rem);
+        50% {
+          transform: translateX(${left ? 15 : -15}%);
         }
         100% {
-            transform: translateX(${left ? -20 : 20}rem);
+          transform: translateX(${left ? 1 : -1}%);
         }
-      }
+			}
+			@keyframes active-${this.uuid} {
+				from {
+					transform: translateX(${left ? 1 : -1}%);
+				}
+				to {
+					transform: translateX(${left ? 1 : -1}%);
+				}
+			}
+			@keyframes outgoing-${this.uuid} {
+				0% {
+					transform: translateX(${left ? 1 : -1}%);
+				}
+				50% {
+					transform: translateX(${left ? 15 : -15}%);
+				}
+				100% {
+					transform: translateX(${left ? -150 : 150}%);
+				}
+			}
+			.close-btn-${this.uuid} {
+				background-color: transparent;
+				border: none;
+				padding: 0.25rem;
+				position: absolute;
+				right: .1rem;
+				top: 0;
+				transition-duration: 150ms;
+			}
+			.close-btn-${this.uuid}:focus {
+				outline: none;
+			}
+			.close-btn-${this.uuid}:hover {
+				transform: scale(1.5);
+			}
       `;
       document.head.appendChild(style);
 
-      this.container = mainNotificationContainer;
-      this.duration = duration || 4000;
+			this.container = mainNotificationContainer;
+			this.enteringDuration = 250;
+			this.outgoingDuration = 350;
+      this.duration = duration || 3400;
       this.errorOpts = {
 				backgroundColor: errorBg || 'red',
 				color: errorColor || 'white',
@@ -113,20 +139,48 @@ class Notification {
 	 */
   add(notiOptions) {
     const { firstChild } = this.container;
-    const div = this.createNotificationContainer(notiOptions);
+    const div = this.createNotificationElement(notiOptions);
     this.container.insertBefore(div, firstChild);
 	}
 
-  createNotificationContainer(notiOptions) {
-		const { message, backgroundColor, color, time } = notiOptions;
-    const div = document.createElement('div');
-    div.addEventListener('animationend', this.removeIt.bind(this, div));
-    div.style.animationDuration = `${time}ms`;
+  createNotificationElement(notiOptions) {
+		const { backgroundColor, closeBtn, color, message, time } = notiOptions;
+		const newTime = time - (this.enteringDuration + this.outgoingDuration);
+		const div = document.createElement('div');
+    div.addEventListener('animationend', (ev) => {
+			const animationName = ev.detail || ev.animationName;
+			if (animationName === `entering-${this.uuid}`) {
+				div.style.animationName = `active-${this.uuid}`;
+				div.style.animationDuration = `${newTime}ms`;
+			} else if (animationName === `active-${this.uuid}`) {
+				div.style.animationName = `outgoing-${this.uuid}`;
+				div.style.animationDuration = `${this.outgoingDuration}ms`;
+			} else if (animationName === `outgoing-${this.uuid}`) {
+				this.removeNotification.call(this, div);
+			}
+		});
+		div.style.animationDuration = `${this.enteringDuration}ms`;
 		div.style.backgroundColor = backgroundColor;
 		div.style.color = color;
     div.innerText = message;
-    div.classList.add(`notification-${this.uuid}`);
+		div.classList.add(`notification-${this.uuid}`);
+		if (closeBtn) {
+			const closeButton = this.createCloseButton.call(this, div, color);
+			div.appendChild(closeButton);
+		}
     return div;
+	}
+
+	createCloseButton(notificationEl, color) {
+		const button = document.createElement('button');
+		button.addEventListener(
+			'click',
+			this.removeActiveAnimation.bind(this, notificationEl),
+		);
+		button.innerHTML = '\u2715';
+		button.style.color = color;
+		button.classList.add(`close-btn-${this.uuid}`);
+		return button;
 	}
 
 	/**
@@ -150,7 +204,11 @@ class Notification {
 		const infoOpt = Object.assign({}, this.infoOpts, infoOptions);
     this.add(infoOpt);
 	}
-  removeIt(el) {
+	removeActiveAnimation(notificationEl) {
+		const animationEnd = new CustomEvent('animationend', { detail: `active-${this.uuid}` });
+		notificationEl.dispatchEvent(animationEnd);
+	}
+  removeNotification(el) {
     this.container.removeChild(el);
 	}
 
