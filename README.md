@@ -5,7 +5,7 @@ Componente que permite realizar notificaciones en la pantalla para brindarle al 
 Este componente manipula el **DOM** directamente con javascript para ***agregar / eliminar*** las notificaciones.
 
 ## Demo
-https://josejuan81.github.io/dl-notificator/
+<a href="https://josejuan81.github.io/dl-notificator/" target="_blank"></a>
 
 ## Cómo usarlo
 
