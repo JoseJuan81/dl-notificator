@@ -18,11 +18,18 @@
 			}
 			.notification-btn {
 				background-color: var(--button-color);
-				border: 1px solid var(--button-color);
+				border: none;
 				border-radius: 5px;
 				color: white;
 				cursor: pointer;
 				padding: 0.75rem 1rem;
+				transition-duration: 120ms;
+			}
+			.notification-btn:focus {
+				outline: none;
+			}
+			.notification-btn:hover {
+				transform: scale(1.025);
 			}
 			.notification-example {
 				align-items: center;
@@ -47,8 +54,20 @@
 				border-radius: 3px;
 				margin-top: 1rem;
 			}
+			pre {
+				margin: 0;
+			}
 			.indent-1 {
 				margin-left: 1rem;
+			}
+			.instance {
+				color: cyan;
+			}
+			.variable {
+				color: greenyellow;
+			}
+			.object-prop {
+				color: peru;
 			}
 			@media (min-width: 640px) {
 				.container {
@@ -78,38 +97,40 @@
 				<div class="">
 					<button
 						class="notification-btn"
-						style="background-color: green"
+						style="background-color: #2EDC76"
 						id="success-right-default"
 						type="button"
-					>Êxito { color: green, time: 4seg }) -></button>
+					>
+						Êxito 1 ->
+					</button>
 				</div>
 				<div class="code-container">
 					<code>
-						<pre>notification.success({</pre>
-						<pre class="indent-1">message: 'Notificación exitosa con opciones por defecto'</pre>
-						<pre class="indent-1">closeBtn: true</pre>
+						<pre><span class="instance">notification</span>.<span class="variable">success</span>({</pre>
+						<pre class="indent-1"><span class="object-prop">message</span>: 'Notificación de éxito con tiempo y color por defecto (4 segundos)'</pre>
+						<pre class="indent-1"><span class="object-prop">closeBtn</span>: true</pre>
 						<pre>})</pre>
 					</code>
 				</div>
 			</section>
 
 			<section class="notification-example">
-				<div>
+				<div class="">
 					<button
 						class="notification-btn"
 						style="background-color: #5FAD56"
 						id="success-right-time-color"
 						type="button"
 					>
-						Éxito { color: #5FAD56, time: 2seg }) ->
+						Éxito 2 ->
 					</button>
 				</div>
 				<div class="code-container">
 					<code>
-						<pre>notification.success({</pre>
-						<pre class="indent-1">message: 'Notificación de éxito con tiempo de 2 segundos y otro color',</pre>
-						<pre class="indent-1">time: 2000,</pre>
-						<pre class="indent-1">backgroundColor: '#5FAD56',</pre>
+						<pre><span class="instance">notification</span>.<span class="variable">success</span>({</pre>
+						<pre class="indent-1"><span class="object-prop">message</span>: 'Notificación de éxito con tiempo de 2 segundos y color personalizado',</pre>
+						<pre class="indent-1"><span class="object-prop">duration</span>: 2000,</pre>
+						<pre class="indent-1"><span class="object-prop">backgroundColor:</span>: '#5FAD56',</pre>
 						<pre>})</pre>
 					</code>
 				</div>
@@ -119,22 +140,20 @@
 				<div>
 					<button
 						class="notification-btn"
-						style="background-color: #57B8FF"
+						style="background-color: #06f"
 						id="info-right-color"
 						type="button"
 					>
-						Información { color: #57B8FF, time: 4seg } ->
+						Información ->
 					</button>
 				</div>
 				<div class="code-container">
-					<code>
-						<pre>notification.info({</pre>
-						<pre class="indent-1">backgroundColor: '#57B8FF',</pre>
-						<pre class="indent-1">color: '#D23751',</pre>
-						<pre class="indent-1">message: 'Notificación de información con tiempo por defecto y otro color',</pre>
-						<pre class="indent-1">closeBtn: true,</pre>
-						<pre>})</pre>
-					</code>
+						<code>
+							<pre><span class="instance">notification</span>.<span class="variable">info</span>({</pre>
+							<pre class="indent-1"><span class="object-prop">message</span>: 'Notificación de información con tiempo por defecto y otro color',</pre>
+							<pre class="indent-1"><span class="object-prop">color:</span>: '#F5EE9E',</pre>
+							<pre>})</pre>
+						</code>
 				</div>
 			</section>
 
@@ -142,19 +161,19 @@
 				<div>
 					<button
 						class="notification-btn"
-						style="background-color: red"
+						style="background-color: #EC0B43"
 						id="error-left-time-color"
 						type="button"
 					>
-						<- Error { color: red, time: 2.6seg })
+						<- Error
 					</button>
 				</div>
 				<div class="code-container">
 					<code>
-						<pre>notification.error({</pre>
-						<pre class="indent-1">message: 'Notificación de información con tiempo por defecto y otro color',</pre>
-						<pre class="indent-1">backgroundColor: '#D00000',</pre>
-						<pre class="indent-1">time: 2600</pre>
+						<pre><span class="instance">notification</span>.<span class="variable">error</span>({</pre>
+						<pre class="indent-1"><span class="object-prop">backgroundColor</span>: '#D00000',</pre>
+						<pre class="indent-1"><span class="object-prop">message:</span>: 'Notificación de error con tiempo de 2.6 seg y otro color',</pre>
+						<pre class="indent-1"><span class="object-prop">duration:</span>: 2600,</pre>
 						<pre>})</pre>
 					</code>
 				</div>
@@ -164,22 +183,41 @@
 				<div>
 					<button
 						class="notification-btn"
-						style="background-color: #F9C22E"
+						style="background-color: #FFBC42"
 						id="warning-left-time-color"
 						type="button"
 					>
-						<- advertencia { color: #F9C22E, time: 5.6seg })
+						<- advertencia
 					</button>
 				</div>
 				<div class="code-container">
-					<code>
-						<pre>notification.error({</pre>
-						<pre class="indent-1">message: 'Notificación de información con tiempo 5.6seg y otro #F9C22E',</pre>
-						<pre class="indent-1">backgroundColor: '#F9C22E',</pre>
-						<pre class="indent-1">time: 5600</pre>
-						<pre class="indent-1">closeBtn: true</pre>
-						<pre>})</pre>
-					</code>
+						<code>
+							<pre><span class="instance">notification</span>.<span class="variable">warning</span>('Notificación de advertencia')</pre>
+						</code>
+				</div>
+			</section>
+
+			<section class="notification-example">
+				<div>
+					<button
+						class="notification-btn"
+						style="color: #FF6542;background-color:#D7D9D7"
+						id="info-config"
+						type="button"
+					>
+						<- info
+					</button>
+				</div>
+				<div class="code-container">
+						<code>
+							<pre><span class="instance">notification</span>.<span class="variable">info</span>({</pre>
+							<pre class="indent-1"><span class="object-prop">backgroundColor</span>: '#D7D9D7',</pre>
+							<pre class="indent-1"><span class="object-prop">closeBtn:</span>: true,</pre>
+							<pre class="indent-1"><span class="object-prop">color:</span>: '#FF6542',</pre>
+							<pre class="indent-1"><span class="object-prop">message:</span>: 'Notificación con colores personalizado',</pre>
+							<pre class="indent-1"><span class="object-prop">duration:</span>: 7500,</pre>
+							<pre>})</pre>
+						</code>
 				</div>
 			</section>
 		</div>

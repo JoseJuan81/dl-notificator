@@ -1,3 +1,5 @@
+import { setNewProperty, mergeObjects } from 'functionallibrary';
+
 class Notification {
   /*
   * @params {object} opts - opciones
@@ -12,10 +14,10 @@ class Notification {
     constructor(opts = {}) {
 			const { duration, errorOptions, infoOptions, left, successOptions, top, warningOptions, zIndex } = opts;
 
-			const { bg: errorBg, color: errorColor, time: errorTime, closeBtn: errorClose } = errorOptions || {};
-			const { bg: infoBg, color: infoColor, time: infoTime, closeBtn: infoClose } = infoOptions || {};
-			const { bg: successBg, color: successColor, time: successTime, closeBtn: successClose } = successOptions || {};
-			const { bg: warningBg, color: warningColor, time: warningTime, closeBtn: warningClose } = warningOptions || {};
+			const { backgroundColor: errorBg, color: errorColor, duration: errorTime, closeBtn: errorClose } = errorOptions || {};
+			const { backgroundColor: infoBg, color: infoColor, duration: infoTime, closeBtn: infoClose } = infoOptions || {};
+			const { backgroundColor: successBg, color: successColor, duration: successTime, closeBtn: successClose } = successOptions || {};
+			const { backgroundColor: warningBg, color: warningColor, duration: warningTime, closeBtn: warningClose } = warningOptions || {};
 
 			/**
 			 * Identificador único de cada instancia generada
@@ -105,30 +107,30 @@ class Notification {
 			this.container = mainNotificationContainer;
 			this.enteringDuration = 250;
 			this.outgoingDuration = 350;
-      this.duration = duration || 3400;
+      this.duration = duration || (4000 - 250 - 350);
       this.errorOpts = {
-				backgroundColor: errorBg || 'red',
+				backgroundColor: errorBg || '#EC0B43',
 				color: errorColor || 'white',
 				closeBtn: !!errorClose,
-				time: errorTime || this.duration,
+				duration: errorTime || this.duration,
 			},
       this.infoOpts = {
-				backgroundColor: infoBg || 'blue',
+				backgroundColor: infoBg || '#06f',
 				color: infoColor || 'white',
 				closeBtn: !!infoClose,
-				time: infoTime || this.duration,
+				duration: infoTime || this.duration,
 			};
       this.successOpts = {
-				backgroundColor: successBg || 'green',
+				backgroundColor: successBg || '#2EDC76',
 				color: successColor || 'white',
 				closeBtn: !!successClose,
-				time: successTime || this.duration,
+				duration: successTime || this.duration,
 			};
 			this.warningOpts = {
-				backgroundColor: warningBg || 'orange',
+				backgroundColor: warningBg || '#FFBC42',
 				color: warningColor || 'white',
 				closeBtn: !!warningClose,
-				time: warningTime || this.duration,
+				duration: warningTime || this.duration,
 			};
   }
 
@@ -145,14 +147,14 @@ class Notification {
 	}
 
   createNotificationElement(notiOptions) {
-		const { backgroundColor, closeBtn, color, message, time } = notiOptions;
-		const newTime = time - (this.enteringDuration + this.outgoingDuration);
+		const { backgroundColor, closeBtn, color, message, duration } = notiOptions;
+		const newDuration = duration - (this.enteringDuration + this.outgoingDuration);
 		const div = document.createElement('div');
     div.addEventListener('animationend', (ev) => {
 			const animationName = ev.detail || ev.animationName;
 			if (animationName === `entering-${this.uuid}`) {
 				div.style.animationName = `active-${this.uuid}`;
-				div.style.animationDuration = `${newTime}ms`;
+				div.style.animationDuration = `${newDuration}ms`;
 			} else if (animationName === `active-${this.uuid}`) {
 				div.style.animationName = `outgoing-${this.uuid}`;
 				div.style.animationDuration = `${this.outgoingDuration}ms`;
@@ -191,7 +193,9 @@ class Notification {
 	 * @param {number} time - tiempo de duración de la notificación. Si no existe se usa la duración por defecto.
 	 */
   error(errorOptions) {
-		const errorOpt = Object.assign({}, this.errorOpts, errorOptions);
+		const errorOpt = typeof errorOptions === 'string'
+			? setNewProperty('message', errorOptions, this.errorOpts)
+			: mergeObjects(this.errorOpts, errorOptions);
     this.add(errorOpt);
 	}
 
@@ -202,7 +206,9 @@ class Notification {
 	 * @param {number} time - tiempo de duración de la notificación. Si no existe se usa la duración por defecto.
 	 */
   info(infoOptions) {
-		const infoOpt = Object.assign({}, this.infoOpts, infoOptions);
+		const infoOpt = typeof infoOptions === 'string'
+			? setNewProperty('message', infoOptions, this.infoOpts)
+			: mergeObjects(this.infoOpts, infoOptions);
     this.add(infoOpt);
 	}
 	removeActiveAnimation(notificationEl) {
@@ -220,7 +226,9 @@ class Notification {
 	 * @param {number} time - tiempo de duración en `ms` de la notificación. Si no existe se usa la duración por defecto.
 	 */
   success(successOptions = {}) {
-		const successOpt = Object.assign({}, this.successOpts, successOptions);
+		const successOpt = typeof successOptions === 'string'
+			? setNewProperty('message', successOptions, this.successOpts)
+			: mergeObjects(this.successOpts, successOptions);
     this.add(successOpt);
 	}
 
@@ -231,7 +239,9 @@ class Notification {
 	 * @param {number} time - tiempo de duración de la notificación. Si no existe se usa la duración por defecto.
 	 */
   warning(warningOptions = {}) {
-		const warningOpt = Object.assign({}, this.warningOpts, warningOptions);
+		const warningOpt = typeof warningOptions === 'string'
+			? setNewProperty('message', warningOptions, this.warningOpts)
+			: mergeObjects(this.warningOpts, warningOptions);
     this.add(warningOpt);
   }
 }
