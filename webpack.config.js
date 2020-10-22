@@ -4,7 +4,10 @@ const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
-	entry: './src/index.js',
+	entry: {
+		main: './src/index.js',
+		Notificator: './src/Notificator.js',
+	},
 	mode: isDev ? 'development' : 'production',
 	output: {
 		filename: '[name].bundle.js',
