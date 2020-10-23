@@ -1,4 +1,4 @@
-import { setNewProperty, mergeObjects } from 'functionallibrary';
+import { mergeObjects, setNewProperty } from 'functionallibrary';
 
 class Notification {
   /*

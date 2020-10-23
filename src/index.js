@@ -1,4 +1,5 @@
-import Notificator from './Notificator';
+// import Notificator from './Notificator';
+import Notificator from './../lib/index.es';
 
 const rightNotification = new Notificator();
 const leftNotification = new Notificator({
