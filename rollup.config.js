@@ -6,7 +6,7 @@ export default [
 		external: ['functionallibrary'],
 		output: {
 			exports: 'named',
-			file: 'lib/index.js',
+			file: 'lib/umd.js',
 			format: 'umd',
 			globals: {
 				functionallibrary: 'functionallibrary',
@@ -25,7 +25,7 @@ export default [
 		input: 'src/Notificator.js',
 		external: ['functionallibrary'],
 		output: {
-			file: 'lib/index.es.js',
+			file: 'lib/es.js',
 			format: 'es',
 			name: 'DlNotificator',
 			footer: '`pe.dominguezjosejuan@gmail.com`',

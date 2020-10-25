@@ -2,15 +2,15 @@
   "name": "dl-notificator",
   "version": "1.0.0",
   "description": "Componente contruido en js para mostrarle informacion al usuario mediante notificaciones temporales",
-  "main": "src/index.js",
-  "module": "src/index.es.js",
+  "main": "lib/umd.js",
+  "module": "lib/es.js",
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@rollup/plugin-babel": "^5.2.1",
     "eslint": "^7.11.0",
-    "functionallibrary": "^2.0.9",
+    "functionallibrary": "^2.1.0",
     "webpack": "^5.1.3",
     "webpack-cli": "^4.0.0"
   },
