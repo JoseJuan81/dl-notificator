@@ -1,4 +1,5 @@
 import Notificator from './../lib/es';
+// import Notificator from './Notificator';
 
 const rightNotification = new Notificator();
 const leftNotification = new Notificator({
@@ -26,6 +27,8 @@ window.addEventListener('load', () => {
 		rightNotification.success({
 			message: 'Notificación de éxito con tiempo y color por defecto (4 segundos)',
 			closeBtn: true,
+		}, () => {
+			console.log('fin de: successRightDefault');
 		})
 	})
 	successRightTimeColor.addEventListener('click', () => {

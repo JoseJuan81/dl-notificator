@@ -140,13 +140,13 @@ class Notification {
 	 * @param {string} color - Color a usar en la notificación
 	 * @param {time} time - Tiempo de duración de la notificación
 	 */
-  add(notiOptions) {
+  add(notiOptions, cb) {
     const { firstChild } = this.container;
-    const div = this.createNotificationElement(notiOptions);
+    const div = this.createNotificationElement(notiOptions, cb);
     this.container.insertBefore(div, firstChild);
 	}
 
-  createNotificationElement(notiOptions) {
+  createNotificationElement(notiOptions, cb) {
 		const { backgroundColor, closeBtn, color, message, duration } = notiOptions;
 		const newDuration = duration - (this.enteringDuration + this.outgoingDuration);
 		const div = document.createElement('div');
@@ -159,7 +159,7 @@ class Notification {
 				div.style.animationName = `outgoing-${this.uuid}`;
 				div.style.animationDuration = `${this.outgoingDuration}ms`;
 			} else if (animationName === `outgoing-${this.uuid}`) {
-				this.removeNotification.call(this, div);
+				this.removeNotification.call(this, div, cb);
 			}
 		});
 		div.style.animationDuration = `${this.enteringDuration}ms`;
@@ -192,11 +192,11 @@ class Notification {
 	 * @param {string | null} errorColor - Color de la notificación. Si no existe se usa el color por defecto.
 	 * @param {number} time - tiempo de duración de la notificación. Si no existe se usa la duración por defecto.
 	 */
-  error(errorOptions) {
+  error(errorOptions = {}, cb) {
 		const errorOpt = typeof errorOptions === 'string'
 			? setNewProperty('message', errorOptions, this.errorOpts)
 			: mergeObjects(this.errorOpts, errorOptions);
-    this.add(errorOpt);
+    this.add(errorOpt, cb);
 	}
 
 	/**
@@ -205,18 +205,21 @@ class Notification {
 	 * @param {string | null} infoColor - Color de la notificación. Si no existe se usa el color por defecto.
 	 * @param {number} time - tiempo de duración de la notificación. Si no existe se usa la duración por defecto.
 	 */
-  info(infoOptions) {
+  info(infoOptions = {}, cb) {
 		const infoOpt = typeof infoOptions === 'string'
 			? setNewProperty('message', infoOptions, this.infoOpts)
 			: mergeObjects(this.infoOpts, infoOptions);
-    this.add(infoOpt);
+    this.add(infoOpt, cb);
 	}
 	removeActiveAnimation(notificationEl) {
 		const animationEnd = new CustomEvent('animationend', { detail: `active-${this.uuid}` });
 		notificationEl.dispatchEvent(animationEnd);
 	}
-  removeNotification(el) {
-    this.container.removeChild(el);
+  removeNotification(el, cb) {
+		this.container.removeChild(el);
+		if (cb && typeof cb === 'function') {
+			cb();
+		}
 	}
 
 	/**
@@ -225,11 +228,11 @@ class Notification {
 	 * @param {string | null} successColor - Color de la notificación. Si no existe se usa el color por defecto.
 	 * @param {number} time - tiempo de duración en `ms` de la notificación. Si no existe se usa la duración por defecto.
 	 */
-  success(successOptions = {}) {
+  success(successOptions = {}, cb) {
 		const successOpt = typeof successOptions === 'string'
 			? setNewProperty('message', successOptions, this.successOpts)
 			: mergeObjects(this.successOpts, successOptions);
-    this.add(successOpt);
+    this.add(successOpt, cb);
 	}
 
 	/**
@@ -238,11 +241,11 @@ class Notification {
 	 * @param {string | null} infoColor - Color de la notificación. Si no existe se usa el color por defecto.
 	 * @param {number} time - tiempo de duración de la notificación. Si no existe se usa la duración por defecto.
 	 */
-  warning(warningOptions = {}) {
+  warning(warningOptions = {}, cb) {
 		const warningOpt = typeof warningOptions === 'string'
 			? setNewProperty('message', warningOptions, this.warningOpts)
 			: mergeObjects(this.warningOpts, warningOptions);
-    this.add(warningOpt);
+    this.add(warningOpt, cb);
   }
 }
 
