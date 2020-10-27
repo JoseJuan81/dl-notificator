@@ -1,6 +1,6 @@
 {
   "name": "dl-notificator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Componente contruido en js para mostrarle informacion al usuario mediante notificaciones temporales",
   "main": "lib/umd.js",
   "module": "lib/es.js",
