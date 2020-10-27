@@ -9,10 +9,19 @@ Este componente manipula el **DOM** directamente con javascript para ***agregar 
 
 ## Cómo usarlo
 
-#### 1.- Instalar componente
+#### 1.- Uso como script
+```html
+<script src="https://unpkg.com/functionallibrary@2.1.0/lib/functionallibrary.umd.js"></script>
+<script src="https://unpkg.com/dl-notificator@1.0.0/lib/umd.js"></script>
+```
+```js
+const notification = new window.DlNotificator.default();
+```
+
+#### 2.- Instalar componente
 `npm install dl-notificator`
 
-#### 2.- Configuración global
+#### 3.- Configuración global
 > Solo en la configuración global se define si la notificación sale por la derecha o izquierda.
 
 > El valor de `z-index` también es definido en la configuración global
@@ -134,3 +143,25 @@ notification.success({
 notification.success('Texto de la notificación');
 ```
 En este caso la notificación ***A*** del tipo **success** tendrá un tiempo de duración de `1500ms` mientras que la ***B*** durará `5000ms`. Las otras (error, info y warning) tendrán `3000ms` de duración.
+
+## Estilos
+Nombre de las clases, estilos por defectos y cómo acceder a ellos para modificarlos
+```css
+[class ^= 'notification-container-'] {
+	position: fixed;
+	right: 0;
+	top: 10px;
+	width: fit-content;
+	z-index: 999;
+}
+[class ^= 'notification-'] {
+	animation-name: entering-${this.uuid};
+	border-radius: 5px;
+	color: white;
+	margin: 0.5rem 1rem;
+	max-width: 15rem;
+	min-width: 12rem;
+	padding: 1rem;
+	position: relative;
+}
+```
