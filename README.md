@@ -1,3 +1,7 @@
+<img src="https://img.shields.io/github/repo-size/josejuan81/dl-notificator">
+<img src="https://img.shields.io/npm/dm/dl-notificator">
+
+
 # Notificator
 Componente que permite realizar notificaciones en la pantalla para brindarle al usuario información importante, por ejemplo: cuando una operación es exitosa o cuando ocurrió un error o simplemente para advertirle algo o cualquier otra cosa.
 
@@ -9,10 +13,12 @@ Este componente manipula el **DOM** directamente con javascript para ***agregar 
 
 ## Cómo usarlo
 
+> ### ¡ Recuerda verificar la versión que vas a usar !
+
 #### 1.- Uso como script
 ```html
 <script src="https://unpkg.com/functionallibrary@2.1.0/lib/functionallibrary.umd.js"></script>
-<script src="https://unpkg.com/dl-notificator@1.0.0/lib/umd.js"></script>
+<script src="https://unpkg.com/dl-notificator@1.0.2/lib/umd.js"></script>
 ```
 ```js
 const notification = new window.DlNotificator.default();
@@ -144,8 +150,23 @@ notification.success('Texto de la notificación');
 ```
 En este caso la notificación ***A*** del tipo **success** tendrá un tiempo de duración de `1500ms` mientras que la ***B*** durará `5000ms`. Las otras (error, info y warning) tendrán `3000ms` de duración.
 
+## Tipos de Notificaciones
+- Error: `notification.error()`
+- Information: `notification.info()`
+- Success: `notification.success()`
+- Warning: `notification.warning()`
+
+## Callback
+Es posible pasar un `callback` al momento de ejecutar el notificador de manera tal de ejecutar cualquier acción después que la notificación finaliza
+```js
+notification.info('Texto de la notificación', () => {
+	// este código se ejecutará después de la notificación. eg. recargar la pantalla (location.reload())
+});
+```
+
 ## Estilos
-Nombre de las clases, estilos por defectos y cómo acceder a ellos para modificarlos
+Nombre de las clases, estilos por defectos y cómo acceder a ellos para modificarlos.
+>nota: Debes agregar `!important` a los estilos que agregues.
 ```css
 [class ^= 'notification-container-'] {
 	position: fixed;
